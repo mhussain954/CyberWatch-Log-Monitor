@@ -123,7 +123,7 @@ class CyberWatchGUI:
         self.status.config(text="Status: Log file loaded successfully")
 
 
-if __name__ == "__main__":
+def start_dashboard():
     root = tk.Tk()
     app = CyberWatchGUI(root)
     root.mainloop()

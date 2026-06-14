@@ -5,6 +5,7 @@
 from parser.log_parser import parse_log
 from detection.threat_detection import detect_threats
 from database.db_manager import save_logs
+from gui.dashboard import start_dashboard
 
 def main():
     print("=== CyberWatch Log Monitoring Tool ===")
@@ -34,6 +35,9 @@ def main():
     save_logs(logs)
 
     print("[+] Process completed successfully")
+
+    # 🔹 START GUI AFTER BACKEND
+    start_dashboard()
 
 if __name__ == "__main__":
     main()
