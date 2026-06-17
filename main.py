@@ -13,7 +13,11 @@ def main():
     log_file = "parser/sample_logs/auth.log"
 
     print("[+] Loading logs...")
-    logs = parse_log(log_file)
+    try:
+        logs = parse_log(log_file)
+    except Exception as e:
+        print(f"[-] Error loading logs: {e}")
+        return
 
     if not logs:
         print("No logs found.")

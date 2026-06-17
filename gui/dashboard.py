@@ -101,10 +101,13 @@ class CyberWatchGUI:
         if not file_path:
             return
 
-        self.logs = parse_log(file_path)
-        self.threats = detect_threats(self.logs)
-
-        self.update_ui()
+        try:
+            self.logs = parse_log(file_path)
+            self.threats = detect_threats(self.logs)
+            self.update_ui()
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to load log file:\n{e}")
+            self.status.config(text=f"Status: Error loading file - {e}")
 
     # ---------- UPDATE UI ----------
     def update_ui(self):
