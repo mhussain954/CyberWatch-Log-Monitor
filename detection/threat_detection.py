@@ -1,12 +1,19 @@
 def detect_threats(logs):
     threats = []
-    keywords = ["failed", "denied", "unauthorized", "error", "invalid"]
+
+    high_keywords    = ["unauthorized", "denied"]
+    medium_keywords  = ["failed", "invalid"]
+    low_keywords     = ["error"]
 
     for log in logs:
-        for word in keywords:
-            if word in log.lower():
-                threats.append(log)
-                break
+        log_lower = log.lower()
+
+        if any(word in log_lower for word in high_keywords):
+            threats.append({"log": log, "severity": "HIGH"})
+        elif any(word in log_lower for word in medium_keywords):
+            threats.append({"log": log, "severity": "MEDIUM"})
+        elif any(word in log_lower for word in low_keywords):
+            threats.append({"log": log, "severity": "LOW"})
 
     return threats
 
@@ -19,4 +26,5 @@ if __name__ == "__main__":
         "System error occurred"
     ]
 
-    print(detect_threats(sample_logs))
+    for threat in detect_threats(sample_logs):
+        print(f"[{threat['severity']}] {threat['log']}")
