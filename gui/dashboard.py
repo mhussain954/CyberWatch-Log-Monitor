@@ -118,7 +118,19 @@ class CyberWatchGUI:
             self.all_logs_tab.insert(tk.END, log + "\n")
 
         for threat in self.threats:
-            self.threats_tab.insert(tk.END, threat + "\n")
+            ip = threat.get("ip", "N/A")
+            severity = threat.get("severity", "UNKNOWN")
+            log = threat.get("log", "")
+            detected_at = threat.get("detected_at", "")
+
+            threat_text = (
+                f"[{severity}] "
+                f"{log} "
+                f"| IP: {ip} "
+                f"| Detected: {detected_at}\n"
+            )
+
+            self.threats_tab.insert(tk.END, threat_text)
 
         self.total_logs_label.config(text=f"Total Logs\n{len(self.logs)}")
         self.threats_label.config(text=f"Threats Detected\n{len(self.threats)}")
