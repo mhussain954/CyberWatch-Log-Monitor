@@ -78,46 +78,93 @@ class CyberWatchGUI:
 
     # ---------- BODY ----------
     def create_body(self):
-        body = tk.Frame(self.root, bg="#0f172a")
-        body.pack(fill="both", expand=True)
+        # Outer containment frame supporting seamless window resizing
+        body = tk.Frame(self.root, bg="#0b0f19")
+        body.pack(fill="both", expand=True, padx=15, pady=15)
+        
+        body.columnconfigure(1, weight=1)
+        body.rowconfigure(0, weight=1)
 
-        # Left Panel (Stats)
-        left = tk.Frame(body, width=250, bg="#020617")
-        left.pack(side="left", fill="y")
+        # ------------------ LEFT SIDEBAR (Metrics Dashboard) ------------------
+        left_panel = tk.Frame(body, width=280, bg="#0f172a", relief="flat")
+        left_panel.grid(row=0, column=0, sticky="nsw", padx=(0, 15))
+        left_panel.pack_propagate(False)
 
+        # Stat Card 1: Total Events
         self.total_logs_label = tk.Label(
-            left, text="Total Logs\n0", fg="#38bdf8",
-            bg="#020617", font=("Segoe UI", 16, "bold"), pady=20
+            left_panel, 
+            text="TOTAL LOG EVENTS\n0", 
+            fg="#38bdf8",
+            bg="#1e293b", 
+            font=("Segoe UI", 12, "bold"), 
+            pady=20,
+            bd=0,
+            relief="flat"
         )
-        self.total_logs_label.pack(fill="x")
+        self.total_logs_label.pack(fill="x", padx=15, pady=(20, 10))
 
+        # Stat Card 2: Threats Detected
         self.threats_label = tk.Label(
-            left, text="Threats Detected\n0", fg="#ef4444",
-            bg="#020617", font=("Segoe UI", 16, "bold"), pady=20
+            left_panel, 
+            text="THREATS DETECTED\n0", 
+            fg="#f87171",
+            bg="#1e293b", 
+            font=("Segoe UI", 12, "bold"), 
+            pady=20,
+            bd=0,
+            relief="flat"
         )
-        self.threats_label.pack(fill="x")
+        self.threats_label.pack(fill="x", padx=15, pady=10)
 
+        # High-Contrast Call-to-Action Action Button
         load_btn = tk.Button(
-            left, text="Load Log File",
+            left_panel, 
+            text="📁 Load Source Log",
             command=self.load_logs,
-            bg="#22c55e", fg="white",
-            font=("Segoe UI", 12, "bold"),
-            pady=10, relief="flat"
+            bg="#0ea5e9", 
+            fg="white",
+            activebackground="#0284c7",
+            activeforeground="white",
+            font=("Segoe UI", 11, "bold"),
+            pady=12, 
+            relief="flat",
+            cursor="hand2"
         )
-        load_btn.pack(pady=30, padx=20, fill="x")
+        load_btn.pack(side="bottom", pady=25, padx=15, fill="x")
 
-        # Right Panel (Tabs)
-        right = tk.Frame(body, bg="#0f172a")
-        right.pack(side="right", fill="both", expand=True)
+        # ------------------ RIGHT PANEL (Interactive Log Viewer) ------------------
+        right_panel = tk.Frame(body, bg="#0b0f19")
+        right_panel.grid(row=0, column=1, sticky="nsew")
 
-        self.tabs = ttk.Notebook(right)
+        self.tabs = ttk.Notebook(right_panel)
         self.tabs.pack(fill="both", expand=True)
 
-        self.all_logs_tab = tk.Text(self.tabs, bg="#020617", fg="#e5e7eb", font=("Consolas", 11))
-        self.threats_tab = tk.Text(self.tabs, bg="#020617", fg="#ef4444", font=("Consolas", 11))
+        # All Logs Display Terminal Window
+        self.all_logs_tab = tk.Text(
+            self.tabs, 
+            bg="#020617", 
+            fg="#cbd5e1", 
+            font=("Consolas", 10),
+            padx=15,
+            pady=15,
+            bd=0,
+            insertbackground="white" # Readable cursor text alignment
+        )
+        
+        # Flagged Threats Terminal Window
+        self.threats_tab = tk.Text(
+            self.tabs, 
+            bg="#020617", 
+            fg="#f87171", 
+            font=("Consolas", 10),
+            padx=15,
+            pady=15,
+            bd=0,
+            insertbackground="white"
+        )
 
-        self.tabs.add(self.all_logs_tab, text="All Logs")
-        self.tabs.add(self.threats_tab, text="Threats Only")
+        self.tabs.add(self.all_logs_tab, text="📜 ALL EVENT LOGS")
+        self.tabs.add(self.threats_tab, text="🚨 CRITICAL ALERTS")
 
     # ---------- STATUS ----------
     def create_status_bar(self):
