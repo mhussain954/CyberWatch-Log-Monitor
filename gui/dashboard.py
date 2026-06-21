@@ -40,25 +40,41 @@ class CyberWatchGUI:
 
     # ---------- MENU ----------
     def create_menu(self):
-        menubar = tk.Menu(self.root)
-        file_menu = tk.Menu(menubar, tearoff=0)
-        file_menu.add_command(label="Load Log File", command=self.load_logs)
+        menubar = tk.Menu(self.root, bg="#1e293b", fg="white", activebackground="#0ea5e9")
+        file_menu = tk.Menu(menubar, tearoff=0, bg="#1e293b", fg="white", activebackground="#0ea5e9")
+        file_menu.add_command(label="📥 Load Log File", command=self.load_logs)
         file_menu.add_separator()
-        file_menu.add_command(label="Exit", command=self.root.quit)
+        file_menu.add_command(label="❌ Exit", command=self.root.quit)
         menubar.add_cascade(label="File", menu=file_menu)
         self.root.config(menu=menubar)
 
     # ---------- HEADER ----------
     def create_header(self):
+        header_frame = tk.Frame(self.root, bg="#020617", bd=0)
+        header_frame.pack(fill="x")
+
         header = tk.Label(
-            self.root,
-            text="CyberWatch – Log Monitoring & Threat Detection",
+            header_frame,
+            text="🛡️ CYBERWATCH LOG MONITORING SYSTEM",
             bg="#020617",
-            fg="white",
-            font=("Segoe UI", 20, "bold"),
-            pady=15
+            fg="#f8fafc",
+            font=("Segoe UI", 16, "bold"),
+            pady=18,
+            padx=20,
+            anchor="w"
         )
-        header.pack(fill="x")
+        header.pack(side="left")
+        
+        # Decorative branding subtitle
+        subtitle = tk.Label(
+            header_frame,
+            text="SECURE AUDITING & ANALYSIS Engine v1.0",
+            bg="#020617",
+            fg="#38bdf8",
+            font=("Segoe UI", 9, "bold"),
+            padx=20
+        )
+        subtitle.pack(side="right", pady=22)
 
     # ---------- BODY ----------
     def create_body(self):
