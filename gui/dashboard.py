@@ -182,7 +182,7 @@ class CyberWatchGUI:
 
     def load_logs(self):
         file_path = filedialog.askopenfilename(
-            title="Select Log File",
+            title="Open Target Security Log File",
             filetypes=[("Log files", "*.log"), ("All files", "*.*")]
         )
 
@@ -190,6 +190,9 @@ class CyberWatchGUI:
             return
 
         try:
+            self.status.config(text="Status: Parsing file stream input...")
+            self.root.update_idletasks()
+
             self.logs = parse_log(file_path)
             self.threats = detect_threats(self.logs)
             
@@ -198,8 +201,8 @@ class CyberWatchGUI:
             
             self.update_ui()
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to load log file:\n{e}")
-            self.status.config(text=f"Status: Error loading file - {e}")
+            messagebox.showerror("IO Processing Error", f"Failed to ingest log stream contents:\n{e}")
+            self.status.config(text=f"Status: Error processing file - {e}")
 
     # ---------- UPDATE UI ----------
     def update_ui(self):
