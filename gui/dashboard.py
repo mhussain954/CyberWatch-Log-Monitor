@@ -206,31 +206,34 @@ class CyberWatchGUI:
 
     # ---------- UPDATE UI ----------
     def update_ui(self):
+        # Clear UI terminal windows safely
         self.all_logs_tab.delete("1.0", tk.END)
         self.threats_tab.delete("1.0", tk.END)
 
+        # Batch insert baseline items
         for log in self.logs:
             self.all_logs_tab.insert(tk.END, log + "\n")
 
+        # Format and write structural telemetry alerts
         for threat in self.threats:
-            ip = threat.get("ip", "N/A")
-            severity = threat.get("severity", "UNKNOWN")
-            log = threat.get("log", "")
-            detected_at = threat.get("detected_at", "")
+            ip = threat.get("ip", "UNKNOWN SOURCE")
+            severity = threat.get("severity", "WARNING").upper()
+            log = threat.get("log", "Undefined Activity Trigger")
+            detected_at = threat.get("detected_at", "N/A")
 
             threat_text = (
-                f"[{severity}] "
-                f"{log} "
-                f"| IP: {ip} "
-                f"| Detected: {detected_at}\n"
+                f"[{severity}] » {log}\n"
+                f"  └─ Target Identity/IP: {ip} | Audited At: {detected_at}\n"
+                f"  {'-'*75}\n"
+                f""
             )
-
             self.threats_tab.insert(tk.END, threat_text)
 
-        self.total_logs_label.config(text=f"Total Logs\n{len(self.logs)}")
-        self.threats_label.config(text=f"Threats Detected\n{len(self.threats)}")
+        # Dynamically push metrics counts down onto Dashboard stat views
+        self.total_logs_label.config(text=f"TOTAL LOG EVENTS\n{len(self.logs)}")
+        self.threats_label.config(text=f"THREATS DETECTED\n{len(self.threats)}")
 
-        self.status.config(text="Status: Log file loaded successfully")
+        self.status.config(text=f"Status: Ingested {len(self.logs)} items successfully. Threat analysis complete.")
 
 
 def start_dashboard():
