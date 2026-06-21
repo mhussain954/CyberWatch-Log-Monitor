@@ -9,15 +9,34 @@ class CyberWatchGUI:
         self.root = root
         self.root.title("CyberWatch – Security Monitoring Dashboard")
         self.root.geometry("1100x650")
-        self.root.configure(bg="#0f172a")
+        self.root.configure(bg="#0b0f19")
 
         self.logs = []
         self.threats = []
+
+        self.setup_styles()
 
         self.create_menu()
         self.create_header()
         self.create_body()
         self.create_status_bar()
+
+    def setup_styles(self):
+        """Configures modern styles for ttk components like Notebook tabs."""
+        self.style = ttk.Style()
+        self.style.theme_use("default")
+        
+        # Custom Notebook Tab Styling
+        self.style.configure("TNotebook", background="#0b0f19", borderwidth=0)
+        self.style.configure("TNotebook.Tab",
+                             background="#1e293b",
+                             foreground="#94a3b8",
+                             font=("Segoe UI", 10, "bold"),
+                             padding=[20, 8],
+                             borderwidth=0)
+        self.style.map("TNotebook.Tab",
+                       background=[("selected", "#0ea5e9")],
+                       foreground=[("selected", "#ffffff")])
 
     # ---------- MENU ----------
     def create_menu(self):
@@ -92,7 +111,6 @@ class CyberWatchGUI:
         )
         self.status.pack(fill="x", side="bottom")
 
-    # ---------- LOAD LOGS ----------
     def load_logs(self):
         file_path = filedialog.askopenfilename(
             title="Select Log File",
