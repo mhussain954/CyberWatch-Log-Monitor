@@ -169,8 +169,14 @@ class CyberWatchGUI:
     # ---------- STATUS ----------
     def create_status_bar(self):
         self.status = tk.Label(
-            self.root, text="Status: Ready",
-            bg="#020617", fg="white", anchor="w", padx=10
+            self.root, 
+            text="Status: System Initialization Complete. Ready.",
+            bg="#020617", 
+            fg="#94a3b8", 
+            anchor="w", 
+            padx=15,
+            pady=8,
+            font=("Segoe UI", 9)
         )
         self.status.pack(fill="x", side="bottom")
 
