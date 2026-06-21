@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, ttk, messagebox
 from parser.log_parser import parse_log
 from detection.threat_detection import detect_threats
+from database.db_manager import save_logs
 
 class CyberWatchGUI:
     def __init__(self, root):
@@ -104,6 +105,10 @@ class CyberWatchGUI:
         try:
             self.logs = parse_log(file_path)
             self.threats = detect_threats(self.logs)
+            
+            # Sync to SQLite when loaded through GUI
+            save_logs(self.logs) 
+            
             self.update_ui()
         except Exception as e:
             messagebox.showerror("Error", f"Failed to load log file:\n{e}")

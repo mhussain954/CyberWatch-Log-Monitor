@@ -33,17 +33,21 @@ def get_security_verdict():
     logs = cursor.fetchall()
     connection.close()
 
+   # Replace the loop inside get_security_verdict() in export.py with this:
     threat_count = 0
-    for log in logs:
-        if "failed" in str(log).lower() or "unauthorized" in str(log).lower():
+    for row in logs:
+        log_text = row[1].lower()  # Access the text column safely from the tuple
+        if "failed" in log_text or "unauthorized" in log_text:
             threat_count += 1
 
     if threat_count == 0:
         print("✅ All Clear — No suspicious activity detected!")
+    elif threat_count == 1:
+        print("⚠️ Minor Alert — 1 event needs review.")
     elif threat_count <= 5:
-        print("⚠️ Minor Alerts —", threat_count, "events need review.")
+        print(f"⚠️ Minor Alerts — {threat_count} events need review.")
     else:
-        print("🚨 High Alert —", threat_count, "suspicious activities detected!")
+        print(f"🚨 High Alert — {threat_count} suspicious activities detected!")
 if __name__ == "__main__":
 
     export_csv()
